@@ -1,5 +1,6 @@
-import Board from "./board";
-import Piece from "./piece";
+import Board from "../board";
+import Move from "../move";
+import Piece from "../piece";
 
 export default class Pawn extends Piece {
     hasMoved : boolean
@@ -44,6 +45,13 @@ export default class Pawn extends Piece {
         if (board.isEnemy(diagonalRight, this.isWhite)) {
             validMoves.push(diagonalRight)
         }
+
+        validMoves.filter(
+            move => {
+                const moveTest = new Move(board, this, this.getPosition, move, board.getPiece(move))
+                return board.isInCheckAfterMove(this, moveTest) === false
+            }
+        )
 
         return validMoves
     }

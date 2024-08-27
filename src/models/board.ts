@@ -1,4 +1,6 @@
+import King from "./pieces/king";
 import Piece from "./piece";
+import Move from "./move";
 
 export default class Board {
 
@@ -15,23 +17,23 @@ export default class Board {
     }
 
     getPiece(squarePosition: [number, number]) {
-        const foundPiece = this.pieces.filter(
+        const foundPiece = this.pieces.find(
             (piece) => piece.getPosition === squarePosition
         )
-        return foundPiece[0]
+        return foundPiece
+    }
+
+    removePiece(piece: Piece) {
+        this.pieces.filter(iPiece => iPiece !== piece)
     }
 
     isEmpty(squarePosition: [number, number]) {
-
-        const foundPiece = this.pieces.filter(
-            (piece) => piece.getPosition == squarePosition
-        )
-        return foundPiece.length === 0 ? true : false
+        return this.getPiece(squarePosition) === undefined
     }
 
     isEnemy (squarePosition: [number, number], isWhite: boolean ) {
         const piece = this.getPiece(squarePosition)
-        return piece.isWhite === isWhite ? false : true
+        return piece !== undefined && piece.isWhite !== isWhite
     }
 
     inBounds (squarePosition: [number, number]) {
@@ -41,5 +43,23 @@ export default class Board {
         } else {
             return false
         }
+    }
+
+    inCheck( isWhite: boolean ) {
+        const king = this.pieces.find(piece => piece instanceof King && piece.isWhite === isWhite) as King
+        const kingPosition = king.getPosition
+        return this.pieces.some(
+            piece => piece.isWhite !== isWhite
+            && piece.getValidMoves(this).some(
+                move => move[0] === kingPosition[0] && move[1] === kingPosition[1]
+            )
+        )
+    }
+
+    isInCheckAfterMove (piece: Piece, move: Move) {
+        move.executeMove()
+        const isInCheck = this.inCheck(piece.isWhite)
+        move.undoMove()
+        return isInCheck
     }
 }
