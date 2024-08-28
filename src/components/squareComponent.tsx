@@ -1,5 +1,14 @@
+import { FC } from "react";
 
-
-const squareComponent = () => {
-    
+interface SquareProps {
+   isWhite: boolean,
+   position : [number, number]
 }
+
+const SquareComponent : FC<SquareProps> = () => {
+   return (
+      <div className="chess-square"></div>
+   ) 
+}
+
+export default SquareComponent

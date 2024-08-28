@@ -1,4 +1,4 @@
-import React from 'react';
+import SquareComponent from './components/SquareComponent';
 import logo from './logo.svg';
 import './App.css';
 
@@ -10,6 +10,7 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <SquareComponent isWhite={true} position={[2, 3]} />
         <a
           className="App-link"
           href="https://reactjs.org"

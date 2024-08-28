@@ -1,0 +1,8 @@
+.chess-square {
+    width: 60px;  /* Adjust the size as needed */
+    height: 60px; /* Same as width to maintain the square shape */
+    background-color: white; /* or black for dark squares */
+    border: 1px solid #000; /* Optional: Add a border if you want */
+    display: inline-block; /* Ensures it stays inline when next to other squares */
+    box-sizing: border-box; /* Ensures the border does not affect the square's dimensions */
+  }
