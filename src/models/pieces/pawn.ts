@@ -48,8 +48,8 @@ export default class Pawn extends Piece {
 
         validMoves.filter(
             move => {
-                const moveTest = new Move(board, this, this.getPosition, move, board.getPiece(move))
-                return board.isInCheckAfterMove(this, moveTest) === false
+                const moveTest = new Move(board, this, this.getPosition, move)
+                return board.isInCheckAfterMove(this.isWhite, moveTest) === false
             }
         )
 

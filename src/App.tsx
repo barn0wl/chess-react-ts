@@ -1,27 +1,23 @@
-import SquareComponent from './components/SquareComponent';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import ChessBoard from './components/chessBoard/ChessBoard'
+import { RootState } from './store'
+import { useSelector } from 'react-redux'
+
 
 function App() {
+  const board = useSelector((state: RootState) => state.game.getBoard)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <>
+      <h1>Vite + React</h1>
+      <ChessBoard board={board}/>
+      <div className="card">
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Enjoy a Game of Chess
         </p>
-        <SquareComponent isWhite={true} position={[2, 3]} />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      </div>
+    </>
+  )
 }
 
-export default App;
+export default App

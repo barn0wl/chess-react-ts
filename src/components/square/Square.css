@@ -1,0 +1,9 @@
+.chess-square {
+    width: 50px;  /* Adjust the size as needed */
+    height: 50px; /* Same as width to maintain the square shape */
+    border: 1px solid #000; /* Optional: Add a border if you want */
+    padding: 0;
+    margin: 0;
+    cursor: 'pointer';
+    outline: 'none';
+  }
