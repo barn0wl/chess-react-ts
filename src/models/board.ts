@@ -49,14 +49,21 @@ export default class Board {
         return pieces
     }
 
+    getPieceArray () : Piece[] {
+        return this.pieces
+    }
+
     addPiece(piece: Piece) {
         this.pieces.push(piece)
     }
 
     getPiece(squarePosition: [number, number]) {
         const foundPiece = this.pieces.find(
-            (piece) => piece.getPosition === squarePosition
-        )
+            (piece) => {
+                const [x, y] = piece.getPosition
+                return x === squarePosition[0] && y === squarePosition[1]
+            }
+        );
         return foundPiece
     }
 

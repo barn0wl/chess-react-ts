@@ -1,16 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import Game from "./models/game"
-import Board from "./models/board"
 import Piece from "./models/piece"
+import { pieceArrayToData, PieceData } from "./serialization"
 
 interface gameState {
-    game: Game
+    pieces: PieceData[]
+    isWhiteTurn : boolean
     selectedSquare?: [number, number],
-    inCheckSquare?: [number, number]
+    inCheckSquare?: [number, number],
+    possibleMoves?: [number, number][]
 }
 
+const initialGame = new Game()
+const initialBoard = initialGame.getBoard
+
 const initialState: gameState = {
-    game: new Game()
+    pieces: pieceArrayToData(initialBoard.getPieceArray()),
+    isWhiteTurn: true 
 }
 
 const gameSlice = createSlice({
@@ -18,11 +24,12 @@ const gameSlice = createSlice({
     initialState,
     reducers: {
         movePiece(state, action: PayloadAction<{piece: Piece, targetPos: [number, number]}>) {
-            const board = state.game.getBoard
             const {piece, targetPos} = action.payload
-            piece.movePiece(board as Board, targetPos)
+            piece.movePiece(initialBoard, targetPos)
+            state.pieces = pieceArrayToData(initialBoard.getPieceArray())
         },
         setSelectedSquare(state, action: PayloadAction<[number, number] | undefined>) {
+            console.log('selectedSquare has been set')
             state.selectedSquare = action.payload
         },
         setInCheckSquare(state, action: PayloadAction<[number, number] | undefined>) {
@@ -31,5 +38,5 @@ const gameSlice = createSlice({
     }
 })
 
-export const {setSelectedSquare, setInCheckSquare} = gameSlice.actions
+export const {movePiece, setSelectedSquare, setInCheckSquare} = gameSlice.actions
 export default gameSlice.reducer

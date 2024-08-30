@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux'
 
 
 function App() {
-  const board = useSelector((state: RootState) => state.game.getBoard)
+  const pieces = useSelector((state: RootState) => state.pieces)
+  const selectedSquare = useSelector((state: RootState) => state.selectedSquare)
 
   return (
     <>
       <h1>Vite + React</h1>
-      <ChessBoard board={board}/>
+      <ChessBoard pieces={pieces} selectedSquare={selectedSquare}/>
       <div className="card">
         <p>
           Enjoy a Game of Chess
