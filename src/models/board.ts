@@ -30,18 +30,18 @@ export default class Board {
         pieces.push(new Queen(false, [3,0]))
         pieces.push(new King(false, [4,0]))
         for (let i = 0; i < 8; i++) {
-            pieces.push(new Pawn(true, [i, 1]))
+            pieces.push(new Pawn(false, [i, 1]))
         }
 
         //adding white pieces
-        pieces.push(new Rook(false, [0,7]))
-        pieces.push(new Rook(false, [7,7]))
-        pieces.push(new Knight(false, [6,7]))
-        pieces.push(new Knight(false, [1,7]))
-        pieces.push(new Bishop(false, [2,7]))
-        pieces.push(new Bishop(false, [5,7]))
-        pieces.push(new Queen(false, [3,7]))
-        pieces.push(new King(false, [4,7]))
+        pieces.push(new Rook(true, [0,7]))
+        pieces.push(new Rook(true, [7,7]))
+        pieces.push(new Knight(true, [6,7]))
+        pieces.push(new Knight(true, [1,7]))
+        pieces.push(new Bishop(true, [2,7]))
+        pieces.push(new Bishop(true, [5,7]))
+        pieces.push(new Queen(true, [3,7]))
+        pieces.push(new King(true, [4,7]))
         for (let i = 0; i < 8; i++) {
             pieces.push(new Pawn(true, [i, 6]))
         }
@@ -68,7 +68,7 @@ export default class Board {
     }
 
     removePiece(piece: Piece) {
-        this.pieces.filter(iPiece => iPiece !== piece)
+        this.pieces = this.pieces.filter(iPiece => iPiece !== piece)
     }
 
     isEmpty(squarePosition: [number, number]) {
@@ -82,7 +82,7 @@ export default class Board {
 
     inBounds (squarePosition: [number, number]) {
         const [x, y] = squarePosition
-        if ( x >= 0 && x <= 8 && y >= 0 && y <= 8 ) {
+        if ( x >= 0 && x <= 7 && y >= 0 && y <= 7 ) {
             return true
         } else {
             return false
@@ -91,13 +91,14 @@ export default class Board {
 
     inCheck( isWhite: boolean ) {
         const king = this.pieces.find(piece => piece instanceof King && piece.isWhite === isWhite) as King
+        console.log(king)
         const kingPosition = king.getPosition
         return this.pieces.some(
             piece => piece.isWhite !== isWhite
             && piece.getValidMoves(this).some(
                 move => move[0] === kingPosition[0] && move[1] === kingPosition[1]
             )
-        )
+        )   
     }
 
     isInCheckAfterMove (isWhite: boolean, move: Move) {
@@ -122,7 +123,7 @@ export default class Board {
                     //there exists a move for this piece after which the king isnt
                     //in check anymore
                     const moveObject = new Move(this, piece, piece.getPosition, move)
-                    this.isInCheckAfterMove(isWhite, moveObject) === false
+                    return this.isInCheckAfterMove(isWhite, moveObject) === false
                 }
             )
         )

@@ -8,7 +8,7 @@ interface gameState {
     isWhiteTurn : boolean
     selectedSquare?: [number, number],
     inCheckSquare?: [number, number],
-    possibleMoves?: [number, number][]
+    possibleMoves: [number, number][]
 }
 
 const initialGame = new Game()
@@ -16,7 +16,8 @@ const initialBoard = initialGame.getBoard
 
 const initialState: gameState = {
     pieces: pieceArrayToData(initialBoard.getPieceArray()),
-    isWhiteTurn: true 
+    isWhiteTurn: true,
+    possibleMoves: []
 }
 
 const gameSlice = createSlice({
@@ -24,6 +25,7 @@ const gameSlice = createSlice({
     initialState,
     reducers: {
         movePiece(state, action: PayloadAction<{piece: Piece, targetPos: [number, number]}>) {
+            //possibly we should abstract this from here
             const {piece, targetPos} = action.payload
             piece.movePiece(initialBoard, targetPos)
             state.pieces = pieceArrayToData(initialBoard.getPieceArray())
@@ -34,9 +36,17 @@ const gameSlice = createSlice({
         },
         setInCheckSquare(state, action: PayloadAction<[number, number] | undefined>) {
             state.selectedSquare = action.payload
+        },
+        setPossibleMoves(state, action: PayloadAction<[number, number]>) {
+            const piece = initialBoard.getPiece(action.payload)
+            if (piece) {
+                console.log(piece.getValidMoves(initialBoard))
+                state.possibleMoves = piece.getValidMoves(initialBoard)
+            }
         }
     }
 })
 
-export const {movePiece, setSelectedSquare, setInCheckSquare} = gameSlice.actions
+export const {movePiece, setSelectedSquare, 
+    setPossibleMoves, setInCheckSquare} = gameSlice.actions
 export default gameSlice.reducer

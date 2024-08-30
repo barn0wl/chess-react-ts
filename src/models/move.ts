@@ -29,6 +29,9 @@ export default class Move {
 
     undoMove() {
         this.piece.setPosition = this.originalPosition
-        if (this.capturedPiece) this.board.addPiece(this.capturedPiece)
-    }
+        if (this.capturedPiece) {
+            this.board.addPiece(this.capturedPiece)
+            this.capturedPiece.setPosition = this.targetPosition
+        }
+    }  
 }

@@ -16,7 +16,7 @@ export default class Pawn extends Piece {
 
     getValidMoves(board: Board): [number, number][] {
 
-        const validMoves : [number, number][] = []
+        let validMoves : [number, number][] = []
         const [x, y] = this.getPosition
 
         const direction = this.isWhite? -1 : 1
@@ -46,7 +46,7 @@ export default class Pawn extends Piece {
             validMoves.push(diagonalRight)
         }
 
-        validMoves.filter(
+        validMoves = validMoves.filter(
             move => {
                 const moveTest = new Move(board, this, this.getPosition, move)
                 return board.isInCheckAfterMove(this.isWhite, moveTest) === false
