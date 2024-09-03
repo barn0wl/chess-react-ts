@@ -1,12 +1,10 @@
 import Board from "../board";
-import Move from "../move";
 import Piece from "../piece";
 
 
 export default class Rook extends Piece {
 
-    getValidMoves(board: Board): [number, number][] {
-
+    getPossibleMoves(board: Board): [number, number][] {
         let validMoves : [number, number][] = []
         const directions : [number, number][] = [ [0, 1], [0, -1], [-1, 0], [1, 0]]
         const [x, y] = this.getPosition
@@ -30,14 +28,6 @@ export default class Rook extends Piece {
                 }
             }
         )
-
-        validMoves = validMoves.filter(
-            move => {
-                const moveTest = new Move(board, this, this.getPosition, move)
-                return board.isInCheckAfterMove(this.isWhite, moveTest) === false
-            }
-        )
-        
         return validMoves
     }
 }

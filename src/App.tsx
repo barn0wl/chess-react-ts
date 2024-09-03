@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <h1>Vite + React</h1>
-      <ChessBoard pieces={pieces} selectedSquare={selectedSquare} possibleMoves={possibleMoves}/>
+      <ChessBoard pieces={pieces} selectedSquare={selectedSquare} possibleMoves={possibleMoves} isWhiteTurn={true}/>
       <div className="card">
         <p>
           Enjoy a Game of Chess

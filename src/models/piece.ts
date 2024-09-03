@@ -21,11 +21,16 @@ export default abstract class Piece {
         this.position = newCoord
     }
 
-    abstract getValidMoves (board: Board) : [number, number][]
+    abstract getPossibleMoves (board: Board) : [number, number][]
     //this function defines what the possible moves for this piece are
 
-    movePiece (board: Board, targetPos: [number, number]) {
-        const move = new Move(board, this, this.getPosition, targetPos)
-        move.executeMove()
+    getLegalMoves (board : Board) : [number, number][] {
+        const possibleMoves = this.getPossibleMoves(board)
+        return possibleMoves.filter(
+            move => {
+                const moveTest = new Move(board, this, this.getPosition, move)
+                return !board.isInCheckAfterMove(this.isWhite, moveTest)
+            }
+        )
     }
 }

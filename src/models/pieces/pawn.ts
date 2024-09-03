@@ -1,5 +1,4 @@
 import Board from "../board";
-import Move from "../move";
 import Piece from "../piece";
 
 export default class Pawn extends Piece {
@@ -14,7 +13,7 @@ export default class Pawn extends Piece {
         this.hasMoved = hasMoved
     }
 
-    getValidMoves(board: Board): [number, number][] {
+    getPossibleMoves(board: Board): [number, number][] {
 
         let validMoves : [number, number][] = []
         const [x, y] = this.getPosition
@@ -45,14 +44,6 @@ export default class Pawn extends Piece {
         if (board.isEnemy(diagonalRight, this.isWhite)) {
             validMoves.push(diagonalRight)
         }
-
-        validMoves = validMoves.filter(
-            move => {
-                const moveTest = new Move(board, this, this.getPosition, move)
-                return board.isInCheckAfterMove(this.isWhite, moveTest) === false
-            }
-        )
-
         return validMoves
     }
 }

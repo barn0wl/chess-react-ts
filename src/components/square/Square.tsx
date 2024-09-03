@@ -5,7 +5,8 @@ interface SquareProps {
    position : [number, number],
    onClick: () => void,
    selectedSquare?: [number, number],
-   isPossibleMove: boolean
+   isPossibleMove: boolean,
+   isInCheck : boolean
 }
 
 const Square : FC<SquareProps> = ( {position, selectedSquare, isPossibleMove, onClick}) => {

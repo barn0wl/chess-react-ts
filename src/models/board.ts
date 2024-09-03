@@ -1,15 +1,16 @@
-import King from "./pieces/king";
-import Piece from "./piece";
-import Move from "./move";
-import Rook from "./pieces/rook";
-import Knight from "./pieces/knight";
-import Bishop from "./pieces/bishop";
-import Queen from "./pieces/queen";
-import Pawn from "./pieces/pawn";
+import King from "./pieces/king"
+import Piece from "./piece"
+import Move from "./move"
+import Rook from "./pieces/rook"
+import Knight from "./pieces/knight"
+import Bishop from "./pieces/bishop"
+import Queen from "./pieces/queen"
+import Pawn from "./pieces/pawn"
 
 export default class Board {
 
     private pieces : Piece[]
+    private onMoveCallback : ((move: Move)=> void) | null = null
 
     constructor (
         pieces : Piece[] = this.initializeBoard()
@@ -47,6 +48,10 @@ export default class Board {
         }
 
         return pieces
+    }
+
+    setOnMoveCallback (callback: (move: Move)=> void) {
+        this.onMoveCallback = callback
     }
 
     getPieceArray () : Piece[] {
@@ -90,21 +95,21 @@ export default class Board {
     }
 
     inCheck( isWhite: boolean ) {
-        const king = this.pieces.find(piece => piece instanceof King && piece.isWhite === isWhite) as King
-        console.log(king)
-        const kingPosition = king.getPosition
+        const kingPosition = this.findKing(isWhite)
         return this.pieces.some(
             piece => piece.isWhite !== isWhite
-            && piece.getValidMoves(this).some(
+            && piece.getPossibleMoves(this).some(
                 move => move[0] === kingPosition[0] && move[1] === kingPosition[1]
             )
-        )   
+        ) 
     }
 
     isInCheckAfterMove (isWhite: boolean, move: Move) {
         move.executeMove()
+        console.log(this.pieces)
         const isInCheck = this.inCheck(isWhite)
         move.undoMove()
+        console.log(this.pieces)
         return isInCheck
     }
 
@@ -116,17 +121,26 @@ export default class Board {
 
     isKingDefendable (isWhite: boolean) {
         return this.pieces.some(
-            //the king and the piece in question are allies
-            piece => piece.isWhite === isWhite
-            && piece.getValidMoves(this).some(
-                move => {
-                    //there exists a move for this piece after which the king isnt
-                    //in check anymore
-                    const moveObject = new Move(this, piece, piece.getPosition, move)
-                    return this.isInCheckAfterMove(isWhite, moveObject) === false
-                }
-            )
+            //the king and the piece in question are allies and there
+            //exists moves that get the king out of check
+            piece => {
+                const legalMoves = piece.getLegalMoves(this)
+                return piece.isWhite === isWhite && legalMoves.length !== 0
+            }
         )
     }
 
+    findKing (isWhite: boolean) {
+        const king = this.pieces.find(piece => piece instanceof King && piece.isWhite === isWhite) as King
+        const kingPosition = king.getPosition
+        return kingPosition
+    }
+
+    movePiece (pieceToMove: Piece, targetPos: [number, number]) {
+        const move = new Move(this, pieceToMove, pieceToMove.getPosition, targetPos)
+        move.executeMove()
+        if (this.onMoveCallback) {
+            this.onMoveCallback(move)
+        }
+    }
 }
