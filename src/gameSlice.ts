@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import Game, { GameState as EnumState } from "./models/game"
-import { pieceArrayToData, PieceData } from "./serialization"
+import { pieceArrayToData, PieceData, pieceDataArrayToPieceArray } from "./serialization"
 
 interface GameState {
     pieces: PieceData[]
@@ -23,20 +23,22 @@ const gameSlice = createSlice({
     initialState,
     reducers: {
         initializeGameState(state) {
-            const game = new Game()
+            const game = new Game([], true)
             const board = game.getBoard
             state.pieces = pieceArrayToData(board.getPieceArray())
             state.isWhiteTurn = game.isWhiteTurn
             state.isCheckMate = game.getGameState === EnumState.CHECKMATE? true : false
         },
         movePiece(state, action: PayloadAction<{startPos: [number, number], targetPos: [number, number]}>) {
+            const initialBoard = pieceDataArrayToPieceArray(state.pieces)
             const {startPos, targetPos} = action.payload
-            const game = new Game() // Use a new game instance or pass it via action payload
+            const game = new Game(initialBoard, state.isWhiteTurn)
             const board = game.getBoard
             const piece = board.getPiece(startPos)
 
             if (piece) {
                 board.movePiece(piece, targetPos)
+                console.log('state updated')
                 state.pieces = pieceArrayToData(board.getPieceArray())
                 state.isWhiteTurn = game.isWhiteTurn
                 state.isCheckMate = game.getGameState === EnumState.CHECKMATE? true : false
@@ -48,8 +50,9 @@ const gameSlice = createSlice({
             state.selectedSquare = action.payload
         },
         setPossibleMoves(state, action: PayloadAction<[number, number] | undefined>) {
+            const initialBoard = pieceDataArrayToPieceArray(state.pieces)
             if (action.payload) {
-                const game = new Game()
+                const game = new Game(initialBoard, state.isWhiteTurn)
                 const board = game.getBoard
                 const piece = board.getPiece(action.payload)
 

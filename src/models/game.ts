@@ -1,4 +1,6 @@
 import Board from "./board"
+import Move from "./move"
+import Piece from "./piece"
 
 export enum GameState {
     ONGOING,
@@ -12,9 +14,12 @@ export default class Game {
     isWhiteTurn : boolean
     private gameState : GameState
 
-    constructor() {
-        this.board = new Board()
-        this.isWhiteTurn = true
+    constructor(
+        initialBoard: Piece[],
+        isWhiteTurn: boolean,
+    ) {
+        this.board = new Board(initialBoard)
+        this.isWhiteTurn = isWhiteTurn
         this.gameState = GameState.ONGOING
         this.board.setOnMoveCallback(this.onMoveCompleted.bind(this))
     }
@@ -45,8 +50,14 @@ export default class Game {
         return this.gameState === GameState.CHECKMATE
     }
 
-    onMoveCompleted () : void {
+    onMoveCompleted (move: Move) : void {
+        const piece = move.piece.constructor.name
+        const color = move.piece.isWhite? 'white' : 'black'
+        const [startX, startY] = move.originalPosition
+        const [targetX, targetY] = move.targetPosition
+        console.log(`Moved ${color} ${piece} from (${startX},${startY}) to (${targetX},${targetY})`)
         this.nextTurn()
         this.updateGameState()
+        console.log('Gamestate updated')
     }
 }

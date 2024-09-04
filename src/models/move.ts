@@ -1,7 +1,6 @@
 import Board from "./board";
 import Piece from "./piece";
 
-
 export default class Move {
     board: Board
     piece: Piece

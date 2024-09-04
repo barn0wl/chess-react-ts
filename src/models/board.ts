@@ -10,12 +10,12 @@ import Pawn from "./pieces/pawn"
 export default class Board {
 
     private pieces : Piece[]
-    private onMoveCallback : ((move: Move)=> void) | null = null
+    private onMoveCallback : ((move: Move) => void) | null = null
 
     constructor (
-        pieces : Piece[] = this.initializeBoard()
+        pieces : Piece[]
     ) {
-        this.pieces = pieces
+        this.pieces = pieces.length > 0 ? pieces : this.initializeBoard()
     }
 
     private initializeBoard () : Piece[] {
@@ -137,6 +137,7 @@ export default class Board {
     }
 
     movePiece (pieceToMove: Piece, targetPos: [number, number]) {
+        if (pieceToMove instanceof Pawn && !pieceToMove.hasMoved) pieceToMove.hasMoved = true
         const move = new Move(this, pieceToMove, pieceToMove.getPosition, targetPos)
         move.executeMove()
         if (this.onMoveCallback) {

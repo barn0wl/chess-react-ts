@@ -48,7 +48,7 @@ const ChessBoard : FC<ChessBoardProps> = ( {pieces, selectedSquare,
     const handleClick = (rowIndex: number, colIndex: number) => {
         const piece = getPiece(rowIndex, colIndex)
         const clickedPosition: [number, number] = [colIndex, rowIndex]
-
+        if (piece) console.log(piece.isWhite)
         console.log(`Clicked square at (${colIndex}, ${rowIndex})`)
 
         // Case 1: Handle if the click is on a possible move

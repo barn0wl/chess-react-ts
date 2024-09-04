@@ -9,7 +9,7 @@ interface SquareProps {
    isInCheck : boolean
 }
 
-const Square : FC<SquareProps> = ( {position, selectedSquare, isPossibleMove, onClick}) => {
+const Square : FC<SquareProps> = ( {position, selectedSquare, isPossibleMove, isInCheck, onClick}) => {
    const [x, y] = position
 
    const getBackGroundColor = () => {
@@ -17,11 +17,13 @@ const Square : FC<SquareProps> = ( {position, selectedSquare, isPossibleMove, on
          if (selectedSquare && x === selectedSquare[0] && y === selectedSquare[1])
             return '#ffeb99'
          else if (isPossibleMove) return '#a0c4ff'
+         else if (isInCheck) return '#ffadad'
          else return 'white'
       } else {
          if (selectedSquare && x === selectedSquare[0] && y === selectedSquare[1])
             return '#ffc107'
          else if (isPossibleMove) return '#4682b4'
+         else if (isInCheck) return '#ff6347'
          else return '#363636'
       }
    }
