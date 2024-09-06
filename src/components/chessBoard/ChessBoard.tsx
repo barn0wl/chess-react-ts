@@ -2,9 +2,9 @@ import { FC, useEffect } from "react"
 import Square from "../square/Square"
 import "./ChessBoard.css"
 import PieceComponent from "../pieces/Piece"
-import { initializeGameState, movePiece, setPossibleMoves, setSelectedSquare } from "../../gameSlice"
+import { initializeGameState, movePiece, setPossibleMoves, setSelectedSquare } from "../../services/gameSlice"
 import { useDispatch } from "react-redux"
-import { PieceData } from "../../serialization"
+import { PieceData } from "../../services/serialization"
 
 interface ChessBoardProps {
     pieces: PieceData[],

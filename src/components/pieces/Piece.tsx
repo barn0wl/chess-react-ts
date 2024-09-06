@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./Piece.css"
-import { PieceData } from "../../serialization";
+import { PieceData } from "../../services/serialization";
 
 interface PieceProps {
     piece: PieceData

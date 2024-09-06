@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import Game, { GameState as EnumState } from "./models/game"
+import Game, { GameState as EnumState } from "../models/game"
 import { pieceArrayToData, PieceData, pieceDataArrayToPieceArray } from "./serialization"
 
 interface GameState {

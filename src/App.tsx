@@ -1,6 +1,6 @@
 import './App.css'
 import ChessBoard from './components/chessBoard/ChessBoard'
-import { RootState } from './store'
+import { RootState } from './services/store'
 import { useSelector } from 'react-redux'
 
 

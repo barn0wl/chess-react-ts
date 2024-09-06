@@ -1,10 +1,10 @@
-import Piece from "./models/piece"
-import Bishop from "./models/pieces/bishop"
-import King from "./models/pieces/king"
-import Knight from "./models/pieces/knight"
-import Pawn from "./models/pieces/pawn"
-import Queen from "./models/pieces/queen"
-import Rook from "./models/pieces/rook"
+import Piece from "../models/piece"
+import Bishop from "../models/pieces/bishop"
+import King from "../models/pieces/king"
+import Knight from "../models/pieces/knight"
+import Pawn from "../models/pieces/pawn"
+import Queen from "../models/pieces/queen"
+import Rook from "../models/pieces/rook"
 
 export interface PieceData {
     type: string,
